@@ -2,12 +2,12 @@
   "packages": [
     "packages/*"
   ],
-  "version": "4.0.2",
+  "version": "4.0.3",
   "command": {
     "publish": {
       "allowBranch": "master"
     }
   },
-  "npmClient":"yarn",
+  "npmClient": "yarn",
   "useWorkspaces": true
 }
