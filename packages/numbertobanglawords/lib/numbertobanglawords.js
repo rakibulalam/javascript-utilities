@@ -1,7 +1,5 @@
 'use strict';
-
-module.exports = numbertobanglawords;
-
-function numbertobanglawords() {
-    // TODO
-}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (value, options = {}) => {
+};
+//# sourceMappingURL=numbertobanglawords.js.map
