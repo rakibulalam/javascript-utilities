@@ -1,13 +1,11 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "6.1.0",
-  "command": {
-    "publish": {
-      "allowBranch": "master"
-    }
-  },
-  "npmClient": "yarn",
-  "useWorkspaces": true
+    "packages": ["packages/*"],
+    "version": "6.1.0",
+    "command": {
+        "publish": {
+            "allowBranch": "master"
+        }
+    },
+    "npmClient": "yarn",
+    "useWorkspaces": true
 }

@@ -1,5 +1,5 @@
 import numbertowords from "../lib/numbertowords";
 
 test("@rakibulalam/numbertowords", () => {
-    console.log(numbertowords);
+    expect(numbertowords(1)).toBe(3);
 });
