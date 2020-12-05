@@ -1,0 +1,4 @@
+**/*.stories.js
+**/*.stories.tsx
+**/*.spec.js
+**/*.spec.tsx

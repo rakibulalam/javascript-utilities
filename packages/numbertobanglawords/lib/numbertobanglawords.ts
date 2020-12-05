@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-export default (value:number,options={}) => {
-    
-}
+export default (value: number, options = {}) => {
+    console.log("bangladesh");
+};
