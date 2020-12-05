@@ -1,14 +1,7 @@
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true,
-});
-exports["default"] = void 0;
-
-var _default = function _default(value) {
-    var options =
-        arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    console.log("bangladesh");
+Object.defineProperty(exports, "__esModule", { value: !0 }),
+    (exports["default"] = void 0);
+var _default = function () {
+    1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};
 };
-
 exports["default"] = _default;

@@ -46,10 +46,10 @@ const optionsType: numberToWordOptionTypes = {
         "quadrillion",
         "trillion",
         "billion",
-        "crore",
+        "core",
         "lakh",
         "thousand",
-        "hundread",
+        "hundred",
     ],
     OVERFLOW_MESSAGE: "overflow",
     IS_SHOW_ONLY: true,
@@ -58,9 +58,10 @@ export default (
     value: number,
     options: numberToWordOptionTypes = optionsType
 ) => {
+    if (value === 0) return "";
     const number = value.toString();
     /** if number has no value */
-    if (number.length === 0) return;
+    if (number.length === 0) return "";
 
     /** if number has floating point */
 
@@ -68,12 +69,12 @@ export default (
 
     if (decimalValue.length > 15) return "overflow";
 
-    const n: string[] = ("000000000000000" + decimalValue)
+    let n: string[] = ("000000000000000" + decimalValue)
         .substr(-15)
-        .match(/^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-
+        .match(
+            /^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/
+        ) as string[];
     if (!n) return;
-
     const {
         LESS_THAN_TWENTY: a,
         TENTHS_LESS_THAN_HUNDRED: b,
@@ -81,55 +82,53 @@ export default (
     } = options;
 
     let words: string = "";
-    words +=
-        Number(n[1]) !== 0
-            ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) + d[0] + " "
-            : "";
-    words +=
-        Number(n[2]) !== 0
-            ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + d[1] + " "
-            : "";
-    words +=
-        Number(n[3]) !== 0
-            ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) + d[2] + " "
-            : "";
-    words +=
-        Number(n[4]) !== 0
-            ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) + d[3] + " "
-            : "";
-    words +=
-        Number(n[5]) !== 0
-            ? (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) + d[4] + " "
-            : "";
-    words +=
-        Number(n[6]) !== 0
-            ? (a[Number(n[6])] || b[n[6][0]] + " " + a[n[6][1]]) + d[5] + " "
-            : "";
-    words +=
-        Number(n[7]) !== 0
-            ? (a[Number(n[7])] || b[n[7][0]] + " " + a[n[7][1]]) + d[6] + " "
-            : "";
-    if (fractionValue) {
-        const coin: any =
-            fractionValue.length === 1 ? fractionValue + "0" : fractionValue;
-        words +=
-            Number(n[8]) !== 0
-                ? a[Number(n[8])] || b[n[8][0]] + " " + a[n[8][1]]
+    const isCoin: boolean = !!fractionValue;
+    // const coin = fractionValue && fractionValue.length>1?fractionValue :fractionValue+"0";
+
+    //   (a[Number(n[index][1])] ? a[Number(n[index][1])] + " " : "") +
+    const numberToWord = (index: number): string => {
+        /** if coin existed */
+
+        n = index === 0 && isCoin == true ? [fractionValue] : n;
+
+        const aIndexValue = Number(n[index][1]);
+        const bIndexValue = Number(n[index][0]);
+        const dIndexValue = d[index - 1];
+        const nIndexValue = Number(n[index]);
+
+        let result =
+            words !== "" &&
+            ((index === 8 && isCoin === false) ||
+                (index === 0 && isCoin === true))
+                ? "and "
                 : "";
-        words +=
-            coin != 0
-                ? (words != "" ? "and " : "") +
-                  (a[Number(coin)] || b[coin[0]] + " " + a[coin[1]]) +
-                  "cent only "
-                : "";
-    } else {
-        words +=
-            Number(n[8]) !== 0
-                ? (words != "" ? "and " : "") +
-                  (a[Number(n[8])] || b[n[8][0]] + " " + a[n[8][1]]) +
-                  "only "
-                : "";
-    }
+        result +=
+            index === 0 && isCoin && fractionValue[0] === "0" ? "zero " : "";
+        if (nIndexValue !== 0) {
+            if (nIndexValue <= 19) {
+                result += a[nIndexValue] + " ";
+            } else {
+                result +=
+                    (a[nIndexValue] || b[bIndexValue]) +
+                    " " +
+                    (a[aIndexValue] ? a[aIndexValue] + " " : "");
+            }
+            result += dIndexValue ? dIndexValue + " " : "";
+        }
+        return result;
+    };
+
+    words += numberToWord(1);
+    words += numberToWord(2);
+    words += numberToWord(3);
+    words += numberToWord(4);
+    words += numberToWord(5);
+    words += numberToWord(6);
+    words += numberToWord(7);
+    words += numberToWord(8);
+    words += numberToWord(0);
+
+    words += isCoin ? "cent only" : "only";
 
     return words;
 };
