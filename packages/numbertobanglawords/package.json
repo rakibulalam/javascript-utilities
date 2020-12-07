@@ -11,7 +11,7 @@
         "words"
     ],
     "author": "Md. Rakibul Alam <rakibulalambd@gmail.com>",
-    "homepage": "https://github.com/rakibulalam/javascript-utilities/packages/numbertobanglawords#readme",
+    "homepage": "https://github.com/rakibulalam/javascript-utilities/tree/master/packages/numbertobanglawords#readme",
     "license": "MIT",
     "main": "lib/numbertobanglawords.js",
     "directories": {
