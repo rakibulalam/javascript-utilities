@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: !0 }),
     (exports["default"] = void 0);
-function _slicedToArray(a, b) {
+function _slicedToArray(arr, i) {
     return (
-        _arrayWithHoles(a) ||
-        _iterableToArrayLimit(a, b) ||
-        _unsupportedIterableToArray(a, b) ||
+        _arrayWithHoles(arr) ||
+        _iterableToArrayLimit(arr, i) ||
+        _unsupportedIterableToArray(arr, i) ||
         _nonIterableRest()
     );
 }
@@ -14,53 +14,53 @@ function _nonIterableRest() {
         "Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
     );
 }
-function _unsupportedIterableToArray(a, b) {
-    if (a) {
-        if ("string" == typeof a) return _arrayLikeToArray(a, b);
-        var c = Object.prototype.toString.call(a).slice(8, -1);
+function _unsupportedIterableToArray(o, minLen) {
+    if (o) {
+        if ("string" == typeof o) return _arrayLikeToArray(o, minLen);
+        var n = Object.prototype.toString.call(o).slice(8, -1);
         return (
-            "Object" === c && a.constructor && (c = a.constructor.name),
-            "Map" === c || "Set" === c
-                ? Array.from(a)
-                : "Arguments" === c ||
-                  /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(c)
-                ? _arrayLikeToArray(a, b)
+            "Object" === n && o.constructor && (n = o.constructor.name),
+            "Map" === n || "Set" === n
+                ? Array.from(o)
+                : "Arguments" === n ||
+                  /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)
+                ? _arrayLikeToArray(o, minLen)
                 : void 0
         );
     }
 }
-function _arrayLikeToArray(a, b) {
-    (null == b || b > a.length) && (b = a.length);
-    for (var c = 0, d = Array(b); c < b; c++) d[c] = a[c];
-    return d;
+function _arrayLikeToArray(arr, len) {
+    (null == len || len > arr.length) && (len = arr.length);
+    for (var i = 0, arr2 = Array(len); i < len; i++) arr2[i] = arr[i];
+    return arr2;
 }
-function _iterableToArrayLimit(a, b) {
-    if ("undefined" != typeof Symbol && Symbol.iterator in Object(a)) {
-        var c = [],
-            d = !0,
-            e = !1,
-            f = void 0;
+function _iterableToArrayLimit(arr, i) {
+    if ("undefined" != typeof Symbol && Symbol.iterator in Object(arr)) {
+        var _arr = [],
+            _n = !0,
+            _d = !1,
+            _e = void 0;
         try {
             for (
-                var g, h = a[Symbol.iterator]();
-                !(d = (g = h.next()).done) &&
-                (c.push(g.value), !(b && c.length === b));
-                d = !0
+                var _s, _i = arr[Symbol.iterator]();
+                !(_n = (_s = _i.next()).done) &&
+                (_arr.push(_s.value), !(i && _arr.length === i));
+                _n = !0
             );
-        } catch (a) {
-            (e = !0), (f = a);
+        } catch (err) {
+            (_d = !0), (_e = err);
         } finally {
             try {
-                d || null == h["return"] || h["return"]();
+                _n || null == _i["return"] || _i["return"]();
             } finally {
-                if (e) throw f;
+                if (_d) throw _e;
             }
         }
-        return c;
+        return _arr;
     }
 }
-function _arrayWithHoles(a) {
-    if (Array.isArray(a)) return a;
+function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
 }
 var optionsType = {
         LESS_THAN_TWENTY: [
@@ -109,66 +109,74 @@ var optionsType = {
         OVERFLOW_MESSAGE: "overflow",
         IS_SHOW_ONLY: !0,
     },
-    _default = function (c) {
-        var e =
+    _default = function (value) {
+        var options =
             1 < arguments.length && void 0 !== arguments[1]
                 ? arguments[1]
                 : optionsType;
-        if (0 === c) return "";
-        var f = c.toString();
-        /** if number has no value */ if (0 === f.length) return "";
-        /** if number has floating point */ var g = f.split("."),
-            h = _slicedToArray(g, 2),
-            i = h[0],
-            j = h[1];
-        if (15 < i.length) return "overflow";
-        var k = ("000000000000000" + i)
+        if (0 === value) return "";
+        var number = value.toString();
+        /** if number has no value */ if (0 === number.length) return "";
+        /** if number has floating point */ var _number$split = number.split(
+                "."
+            ),
+            _number$split2 = _slicedToArray(_number$split, 2),
+            decimalValue = _number$split2[0],
+            fractionValue = _number$split2[1];
+        if (15 < decimalValue.length) return "overflow";
+        var n = ("000000000000000" + decimalValue)
             .substr(-15)
             .match(
                 /^(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/
             );
-        if (k) {
-            var l = e.LESS_THAN_TWENTY,
-                a = e.TENTHS_LESS_THAN_HUNDRED,
-                b = e.QUADRILLION_TO_HUNDRED,
-                d = "",
-                m = !!j,
-                o = function (c) {
-                    k = 0 === c && !0 == m ? [j] : k;
-                    var e = +k[c][1],
-                        f = +k[c][0],
-                        g = b[c - 1],
-                        h = +k[c],
-                        i =
-                            "" !== d &&
-                            ((8 === c && !1 === m) || (0 === c && !0 === m))
+        if (n) {
+            var a = options.LESS_THAN_TWENTY,
+                b = options.TENTHS_LESS_THAN_HUNDRED,
+                d = options.QUADRILLION_TO_HUNDRED,
+                words = "",
+                isCoin = !!fractionValue,
+                numberToWord = function (index) {
+                    n = 0 === index && !0 == isCoin ? [fractionValue] : n;
+                    var aIndexValue = +n[index][1],
+                        bIndexValue = +n[index][0],
+                        dIndexValue = d[index - 1],
+                        nIndexValue = +n[index],
+                        result =
+                            "" !== words &&
+                            ((8 === index && !1 === isCoin) ||
+                                (0 === index && !0 === isCoin))
                                 ? "and "
                                 : "";
                     return (
-                        (i += 0 === c && m && "0" === j[0] ? "zero " : ""),
-                        0 !== h &&
-                            ((i +=
-                                19 >= h
-                                    ? l[h] + " "
-                                    : (l[h] || a[f]) +
+                        (result +=
+                            0 === index && isCoin && "0" === fractionValue[0]
+                                ? "zero "
+                                : ""),
+                        0 !== nIndexValue &&
+                            ((result +=
+                                19 >= nIndexValue
+                                    ? a[nIndexValue] + " "
+                                    : (a[nIndexValue] || b[bIndexValue]) +
                                       " " +
-                                      (l[e] ? l[e] + " " : "")),
-                            (i += g ? g + " " : "")),
-                        i
+                                      (a[aIndexValue]
+                                          ? a[aIndexValue] + " "
+                                          : "")),
+                            (result += dIndexValue ? dIndexValue + " " : "")),
+                        result
                     );
                 };
             return (
-                (d += o(1)),
-                (d += o(2)),
-                (d += o(3)),
-                (d += o(4)),
-                (d += o(5)),
-                (d += o(6)),
-                (d += o(7)),
-                (d += o(8)),
-                (d += o(0)),
-                (d += m ? "cent only" : "only"),
-                d
+                (words += numberToWord(1)),
+                (words += numberToWord(2)),
+                (words += numberToWord(3)),
+                (words += numberToWord(4)),
+                (words += numberToWord(5)),
+                (words += numberToWord(6)),
+                (words += numberToWord(7)),
+                (words += numberToWord(8)),
+                (words += numberToWord(0)),
+                (words += isCoin ? "cent only" : "only"),
+                words
             );
         }
     };
