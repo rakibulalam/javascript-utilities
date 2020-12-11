@@ -1,5 +1,3 @@
-"use strict";
-// 123456780,9123456.50
 type zeroToNumber = {
     [key: string]: string;
 };
@@ -114,83 +112,84 @@ const ZERO_TO_LESS_THAN_THOUSEND: zeroToNumber = {
     800: "আটশো",
     900: "নয়শো",
 };
-export const toFixed = (
-    value: number,
-    fixed: number,
-    isRoundPrecision: boolean = false
-): number => {
-    if (value && isRoundPrecision === false) {
-        const [fixValue]: string[] = value
-            .toString()
-            .match(
-                new RegExp("^-?\\d+(?:.\\d{1," + (fixed || -1) + "})?")
-            ) as string[];
-        console.log(fixValue, "fixvalue");
-        return parseFloat(fixValue);
-    } else {
-        return parseFloat(value.toFixed(fixed));
-    }
-};
 
+const GLOBAL_NUMBER_SYSTEM: [number, string][] = [
+    [1000000000000000, "কোয়াড্রিলিয়ন"],
+    [1000000000000, "ট্রিলিয়ন"],
+    [1000000000, "বিলিয়ন"],
+    [1000000, "মিলিয়ন"],
+    [1000, "হাজার"],
+    [1, ""],
+];
+const SOUTH_ASIA_NUMBER_SYSTEM: [number, string, string?][] = [
+    [1000000000000000, "কোয়াড্রিলিয়ন"],
+    [1000000000000, "লাখ", "কোটি"],
+    [10000000000, "হাজার", "কোটি"],
+    [10000000, "কোটি"],
+    [100000, "লাখ"],
+    [1000, "হাজার"],
+    [1, ""],
+];
 export default (
     number: number = 0,
+    isSouthAsiaNumberSystem: boolean = true,
     currencyTitle: string = "টাকা",
     coinTitle: string = "পয়সা"
 ): string | undefined => {
     let [hasValue, hasCoin] = number.toString().split(".");
 
+    if (hasValue.length > 17) return "সীমা অতিক্রম করেছে";
+
     let value: number = parseInt(hasValue);
-
-    let words: string = "";
-    const toWords = (digit: number, determinantor: string, and?: boolean) => {
-        let result: string = "";
-        const division: number = Math.floor(value / digit);
-        if (division > 0) {
-            value = value % digit; //remainder
-            console.log(value, "valueooooo");
-
-            result = ZERO_TO_LESS_THAN_THOUSEND[division];
-
-            if (!result) {
-                result =
-                    ZERO_TO_LESS_THAN_THOUSEND[
-                        Math.floor(division / 100) * 100
-                    ];
-                result += " " + ZERO_TO_LESS_THAN_THOUSEND[division % 100];
-            }
-            result +=
-                (determinantor.length > 0 ? " " : "") +
-                determinantor +
-                (value === 0 ? "" : " ");
-        }
-        return result;
-    };
-    words += toWords(100000000000000, "কোটি");
-    words += toWords(1000000000000, "লাখ");
-    words += toWords(10000000000, "হাজার");
-
-    words += toWords(10000000, "কোটি");
-
-    words += toWords(100000, "লাখ");
-    words += toWords(1000, "হাজার");
-
-    words += words !== "" && !hasCoin ? "এবং " : "";
-    words += toWords(1, currencyTitle, !hasCoin);
-
+    let result: string = "";
+    const numberSystem = isSouthAsiaNumberSystem
+        ? SOUTH_ASIA_NUMBER_SYSTEM
+        : GLOBAL_NUMBER_SYSTEM;
+    result = toWords(value, numberSystem);
+    result += result ? " " + currencyTitle : "";
     if (hasCoin) {
         value = parseInt((hasCoin + "00").substring(0, 2));
-
-        console.log(
-            value,
-            "hasCoin value",
-            hasCoin + "00",
-            (hasCoin + "00").substring(0, 1)
-        );
-
-        words += words !== "" ? " এবং " : "";
-
-        words += toWords(1, coinTitle, true);
+        result += result !== "" && value > 0 ? " ও " : "";
+        result += geneRator(value, value, "", "");
+        result += coinTitle;
     }
+    return result;
+};
 
+const toWords = (
+    value: number,
+    numberSystem: [number, string, string?][],
+    index: number = 0,
+    words: string = ""
+) => {
+    const [systemValue, determinator, family] = numberSystem[index];
+    if (systemValue <= value) {
+        const division = Math.floor(value / systemValue);
+        if (division > 0) {
+            value = value % systemValue;
+            words += geneRator(value, division, determinator, family);
+        }
+    }
+    if (value && index < numberSystem.length) {
+        index++;
+        words = toWords(value, numberSystem, index, words);
+    }
+    return words;
+};
+const geneRator = (
+    value: number,
+    division: number,
+    determinator: string,
+    family: string
+) => {
+    let words: string = ZERO_TO_LESS_THAN_THOUSEND[division];
+    if (!words) {
+        words = ZERO_TO_LESS_THAN_THOUSEND[Math.floor(division / 100) * 100];
+        words += " " + ZERO_TO_LESS_THAN_THOUSEND[division % 100];
+    }
+    words +=
+        (determinator ? " " : "") +
+        determinator +
+        (value ? " " : family ? " " + family : "");
     return words;
 };

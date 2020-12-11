@@ -25,22 +25,22 @@ tmp/
 *.map
 
 # Configs
-.babelrc
-.dockerignore
-.eslintignore
-.eslintrc.js
-.flowconfig
-.gitattributes
-.gitignore
-.npmrc
-.prettierignore
-.yarnc
-babel.config.js
-dangerfile.ts
-jest.config.js
-prettier.config.js
-tsconfig.eslint.json
-tsconfig.json
-tsconfig.options.json
-*.tsbuildinfo
-webpack.config.js
+# .babelrc
+# .dockerignore
+# .eslintignore
+# .eslintrc.js
+# .flowconfig
+# .gitattributes
+# .gitignore
+# .npmrc
+# .prettierignore
+# .yarnc
+# babel.config.js
+# dangerfile.ts
+# jest.config.js
+# prettier.config.js
+# tsconfig.eslint.json
+# tsconfig.json
+# tsconfig.options.json
+# *.tsbuildinfo
+# webpack.config.js

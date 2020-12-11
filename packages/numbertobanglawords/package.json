@@ -14,6 +14,8 @@
     "homepage": "https://github.com/rakibulalam/javascript-utilities/tree/master/packages/numbertobanglawords#readme",
     "license": "MIT",
     "main": "lib/numbertobanglawords.js",
+    "typings": "lib/numbertobanglawords.d.ts",
+    "module": "src/numbertobanglawords.ts",
     "directories": {
         "lib": "lib",
         "test": "__tests__"
@@ -21,6 +23,9 @@
     "files": [
         "lib"
     ],
+    "scripts": {
+        "tsc": "tsc"
+    },
     "publishConfig": {
         "access": "public",
         "registry": "https://registry.npmjs.org/"

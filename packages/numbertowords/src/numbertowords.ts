@@ -1,6 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const ZERO_TO_NINETEEN = [
+// const TEN = 10;
+// const ONE = 1;
+// const ONE_HUNDRED = 100;
+// const ONE_THOUSAND = 1000;
+// const ONE_LAKH = 100000;
+// const ONE_CORE = 10000000;
+// const ONE_BILLION = 1000000000; //         1.000.000.000 (9)
+// const ONE_TRILLION = 1000000000000; //     1.000.000.000.000 (12)
+// const ONE_QUADRILLION = 1000000000000000;
+
+const ZERO_TO_NINETEEN: string[] = [
     "",
     "one",
     "two",
@@ -22,7 +30,8 @@ const ZERO_TO_NINETEEN = [
     "eighteen",
     "nineteen",
 ];
-const ZERO_TEN_TO_NINETY = [
+
+const ZERO_TEN_TO_NINETY: string[] = [
     "",
     "",
     "twenty",
@@ -34,16 +43,18 @@ const ZERO_TEN_TO_NINETY = [
     "eighty",
     "ninety",
 ];
-const GLOBAL_NUMBER_SYSTEM = [
+
+const GLOBAL_NUMBER_SYSTEM: [number, string, string?][] = [
     [1000000000000000, "quadrillion"],
     [1000000000000, "trillion"],
     [1000000000, "billion"],
     [1000000, "million"],
+    // [100000, 'lakh'],
     [1000, "thousand"],
     [100, "hundred"],
     [1, ""],
 ];
-const SOUTH_ASIA_NUMBER_SYSTEM = [
+const SOUTH_ASIA_NUMBER_SYSTEM: [number, string, string?][] = [
     [1000000000000000, "quadrillion"],
     [10000000000000, "hundred", "lakh core"],
     [1000000000000, "lakh", "core"],
@@ -55,16 +66,18 @@ const SOUTH_ASIA_NUMBER_SYSTEM = [
     [100, "hundred"],
     [1, ""],
 ];
-exports.default = (
-    number = 0,
-    isSouthAsiaNumberSystem = true,
-    currencyTitle = "taka",
-    coinTitle = "poisha"
-) => {
+export default (
+    number: number = 0,
+    isSouthAsiaNumberSystem: boolean = true,
+    currencyTitle: string = "taka",
+    coinTitle: string = "poisha"
+): string | undefined => {
     let [hasValue, hasCoin] = number.toString().split(".");
+
     if (hasValue.length > 17) return "max limit exceeded";
-    let value = parseInt(hasValue);
-    let result = "";
+
+    let value: number = parseInt(hasValue);
+    let result: string = "";
     const numberSystem = isSouthAsiaNumberSystem
         ? SOUTH_ASIA_NUMBER_SYSTEM
         : GLOBAL_NUMBER_SYSTEM;
@@ -78,12 +91,13 @@ exports.default = (
     }
     return result;
 };
+
 const toWords = (
-    value,
-    numberSystem,
-    hasCoin = false,
-    index = 0,
-    words = ""
+    value: number,
+    numberSystem: [number, string, string?][],
+    hasCoin: boolean = false,
+    index: number = 0,
+    words: string = ""
 ) => {
     const [systemValue, determinator, family] = numberSystem[index];
     if (systemValue <= value) {
@@ -105,10 +119,15 @@ const toWords = (
     }
     return words;
 };
-const geneRator = (value, division, determinator, family) => {
-    let words = ZERO_TO_NINETEEN[division];
+const geneRator = (
+    value: number,
+    division: number,
+    determinator: string,
+    family: string
+) => {
+    let words: string = ZERO_TO_NINETEEN[division];
     if (!words) {
-        const number = division.toString().split("");
+        const number: string[] = division.toString().split("");
         const [a, b, c] = number;
         let lastWord = "";
         if (number.length === 3) {
@@ -130,4 +149,3 @@ const geneRator = (value, division, determinator, family) => {
         (value ? " " : family ? " " + family : "");
     return words;
 };
-//# sourceMappingURL=numbertowords.js.map

@@ -69,7 +69,8 @@
     "scripts": {
         "commit": "npx git-cz",
         "bootstrap": "lerna bootstrap --use-workspaces",
-        "build": "lerna exec --parallel -- babel --root-mode upward lib -d lib --extensions '.js,.jsx,.ts,.tsx' --ignore **/*.stories.js,**/*.stories.tsx,**/*.spec.js,**/*.spec.tsx",
+        "build": "lerna exec --parallel -- babel --root-mode upward src -d lib --extensions '.js,.jsx,.ts,.tsx' --ignore **/*.stories.js,**/*.stories.tsx,**/*.spec.js,**/*.spec.tsx",
+        "tsc": "lerna run tsc",
         "coverage": "jest --coverage",
         "deploy-storybook": "storybook-to-ghpages",
         "dev": "start-storybook -p 5000",

@@ -1,0 +1,38 @@
+{
+    "name": "@rakibulalam/react-vasha-phonetic",
+    "version": "7.1.3",
+    "description": "bangla phonetic for react js ",
+    "keywords": [
+        "bangla",
+        "phonetic",
+        "input",
+        "textarea",
+        "react.js",
+        "bangla",
+        "phonetic"
+    ],
+    "author": "Md. Rakibul Alam <rakiblalambd@gmail.com>",
+    "homepage": "https://github.com/rakibulalam/javascript-utilities#readme",
+    "license": "ISC",
+    "main": "lib/reactbanglaphonetic.js",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rakibulalam/javascript-utilities.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/rakibulalam/javascript-utilities/issues"
+    }
+}

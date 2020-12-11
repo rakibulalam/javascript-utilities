@@ -3,6 +3,6 @@
     "compilerOptions": {
         "outDir": "./lib"
     },
-    "include": ["./lib"],
+    "include": ["./src"],
     "exclude": ["**/*.spec.ts", "app_/**/*.ts", "**/*.d.ts", "node_modules"]
 }
